@@ -19,7 +19,7 @@ namespace TeamDemo.Controllers
 
         }
 
-        [HttpGet("addUser")]
+        [HttpPost("addUser")]
         public IActionResult AddUser([FromBody] string userMail, [FromRoute] int id)
         {
             if(userMail == null) return Ok("Provide player data");       
@@ -27,7 +27,7 @@ namespace TeamDemo.Controllers
 
         }
 
-        [HttpGet("updateCaptain")]
+        [HttpPut("updateCaptain")]
         public IActionResult UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id) {
             if (captainEmail == null)  return Ok("Provide player data"); 
             return Ok(_coachService.MakeCaptain(captainEmail, id));
