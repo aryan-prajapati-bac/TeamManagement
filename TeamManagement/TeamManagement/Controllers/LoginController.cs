@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TeamManagement.Controllers;
 using TeamManagement.Models;
 using TeamManagement.Services;
 
 namespace TeamDemo.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : BaseController
     {
+        #region Service
         private readonly LoginService _loginService;
+        #endregion
+
+        #region DI
         public LoginController(LoginService service)
         {
             _loginService = service;
         }
+        #endregion
+
+        #region APIs
         [HttpGet("signin")]
         public IActionResult Login([FromBody] Login obj)
         {
@@ -33,6 +39,7 @@ namespace TeamDemo.Controllers
             return Ok(_loginService.ResponseObj(obj));
 
         }
+        #endregion
 
     }
 }

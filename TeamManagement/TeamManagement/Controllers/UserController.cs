@@ -4,20 +4,22 @@ using TeamManagement.Interfaces;
 using TeamManagement.Models;
 
 namespace TeamManagement.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+{   
+    public class UserController : BaseController
     {
-        
-       private readonly IUserService _userService;
-       
+        #region Service
+        private readonly IUserService _userService;
+        #endregion
 
+        #region DI
         public UserController(IUserService userservice)
         {
             _userService = userservice;
             
         }
+        #endregion
+
+        #region APIs
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] User user)
@@ -43,5 +45,7 @@ namespace TeamManagement.Controllers
             }
             return Ok(_userService.ChangePwd(login,Id));
         }
+
+        #endregion
     }
 }

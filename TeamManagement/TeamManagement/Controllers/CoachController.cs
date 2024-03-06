@@ -1,25 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TeamManagement.Controllers;
 using TeamManagement.Interfaces;
 
 
 namespace TeamDemo.Controllers
 {
-    [Authorize(Roles ="coach")]
-    [Route("api/[controller]/{id:int}")]
-    [ApiController]
-    public class CoachController : ControllerBase
+    [Authorize(Roles ="coach")]    
+    public class CoachController : BaseController
     {
-      
+        #region Service
         private readonly ICoachService _coachService;
+        #endregion
+
+        #region DI
         public CoachController(ICoachService _coachServicecs)
         {
            
             _coachService = _coachServicecs;
 
         }
+        #endregion
 
-        [HttpPost("addUser")]
+        #region APIs
+
+        [HttpPost("{id:int}/addUser")]
         public IActionResult AddUser([FromBody] string userMail, [FromRoute] int id)
         {
             if(userMail == null) return Ok("Provide player data");       
@@ -27,11 +32,13 @@ namespace TeamDemo.Controllers
 
         }
 
-        [HttpPut("updateCaptain")]
+        [HttpPut("{id:int}/updateCaptain")]
         public IActionResult UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id) {
             if (captainEmail == null)  return Ok("Provide player data"); 
             return Ok(_coachService.MakeCaptain(captainEmail, id));
 
         }
+
+        #endregion
     }
 }

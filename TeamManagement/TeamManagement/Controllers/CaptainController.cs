@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TeamManagement.Controllers;
 using TeamManagement.Interfaces;
 
 
@@ -7,19 +8,20 @@ using TeamManagement.Interfaces;
 namespace TeamDemo.Controllers
 {
     [Authorize(Roles ="captain")]
-    
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CaptainController : ControllerBase
+    public class CaptainController : BaseController
     {
+        #region Service
         private readonly ICaptainService _captainService;
+        #endregion
+
+        #region DI
         public CaptainController(ICaptainService captainServices)
         {
             _captainService= captainServices;
         }
+        #endregion
 
-
-       
+        #region APIs
         [HttpGet("selectPlayer")]
         public IActionResult AddPlayer([FromBody] string playerEmail)
         {
@@ -34,5 +36,6 @@ namespace TeamDemo.Controllers
             return Ok(added);
 
         }
+        #endregion
     }
 }
