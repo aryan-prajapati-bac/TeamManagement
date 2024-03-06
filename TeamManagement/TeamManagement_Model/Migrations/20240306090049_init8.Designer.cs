@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamManagement_Models.Database;
 
@@ -11,9 +12,11 @@ using TeamManagement_Models.Database;
 namespace TeamManagement_Model.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240306090049_init8")]
+    partial class init8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +94,6 @@ namespace TeamManagement_Model.Migrations
                             DOB = new DateTime(2001, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Aryan",
                             LastName = "Prajapati",
-                            Password = "orM+mYfowlQ2G8r87ViiRep7qRnq8JMRlpSmjgG9Wf4=",
                             RoleId = 3,
                             UserId = 0
                         });

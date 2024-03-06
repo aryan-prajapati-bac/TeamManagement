@@ -26,8 +26,7 @@ namespace TeamManagement_Models.Database
                 {
                     FirstName = "Aryan",
                     LastName = "Prajapati",
-                    ContactNumber = "8989898989",
-                    
+                    ContactNumber = "8989898989",                    
                     Password = PasswordHasher.HashPassword("team1234"),
                     Email = configutation["EmailSettings:SmtpUsername"],
                     DOB = new DateTime(2001, 11, 02),

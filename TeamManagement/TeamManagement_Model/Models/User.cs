@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace TeamManagement.Models
 {
     public class User
     {
-      
+        #region Properties
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
@@ -38,11 +38,10 @@ namespace TeamManagement.Models
         public int Count { get; set; }
 
         
-        [JsonIgnore]
-        public string Password {  get; set; }
+        [JsonIgnore]        
+        public string? Password {  get; set; }
 
+        #endregion
 
-
-       // public string secondarymail { get; set; }
     }
 }
