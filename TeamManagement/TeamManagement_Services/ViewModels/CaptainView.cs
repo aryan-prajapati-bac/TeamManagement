@@ -3,8 +3,9 @@ using TeamManagement.Models;
 
 namespace TeamManagement.ViewModals
 {
-    public class CaptainDTO
+    public class CaptainView
     {
+        #region Properties
         public string CaptainName { get; set; }
         public string CaptainEmail { get; set; }
 
@@ -12,7 +13,9 @@ namespace TeamManagement.ViewModals
 
         
         public StringBuilder playerList = new StringBuilder("");
+        #endregion
 
+        #region Methods
         public StringBuilder PlayerList(List<User> TeamPlayers)
         {
             if (TeamPlayers.Count > 0)
@@ -29,7 +32,8 @@ namespace TeamManagement.ViewModals
             }
             return playerList;
         }
-        
+
+
 
         public override string ToString()
         {
@@ -37,5 +41,6 @@ namespace TeamManagement.ViewModals
                 $"Your Email Id is {CaptainEmail}\n" +
                 $"Your Team : {PlayerList(TeamPlayers).ToString()}";
         }
+        #endregion
     }
 }

@@ -1,18 +1,24 @@
 ﻿using System.Net.Mail;
 using System.Net;
 using TeamManagement.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace TeamDemo.Services
 {
     public class MailService : IMailServices
     {
-        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
+        #region Service
+        private readonly IConfiguration _configuration;
+        #endregion
 
-        public MailService(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        #region DI
+        public MailService(IConfiguration configuration)
         {
-            _configuration = configuration;
-            
+            _configuration = configuration;            
         }
+        #endregion
+
+        #region Methods
         public void SendEmail(string to, string subject, string body)
         {
             string smtpServer = _configuration["EmailSettings:SmtpServer"];
@@ -42,5 +48,6 @@ namespace TeamDemo.Services
                     Console.WriteLine(ex.StackTrace); }
             }
         }
+        #endregion
     }
 }

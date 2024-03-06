@@ -3,8 +3,9 @@ using TeamManagement.Models;
 
 namespace TeamManagement.ViewModals
 {
-    public class CoachDTO
+    public class CoachView
     {
+        #region Properties
         public string CoachName { get; set; }
 
         public string CoachEmail { get; set; }
@@ -15,7 +16,9 @@ namespace TeamManagement.ViewModals
         public List<User> TeamPlayers =new List<User>();
 
         public StringBuilder playerList = new StringBuilder("");
+        #endregion
 
+        #region Methods
         public StringBuilder PlayerList(List<User> TeamPlayers)
         {
             if (TeamPlayers.Count > 0)
@@ -40,5 +43,6 @@ namespace TeamManagement.ViewModals
                 $"Your Team : {PlayerList(TeamPlayers).ToString()}";
                 
         }
+        #endregion
     }
 }

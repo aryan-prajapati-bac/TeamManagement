@@ -8,15 +8,23 @@ namespace TeamManagement_Models.Database
 {
     public class MyDBContext : DbContext
     {
+        #region Service
         private readonly IConfiguration configutation;
+        #endregion
+
+        #region DI
         public MyDBContext(DbContextOptions options,IConfiguration _config) : base(options)
         {
             configutation = _config;
         }
+        #endregion
 
+        #region Models
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Login { get; set; }
+        #endregion
 
+        #region OnModelCreation
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -42,5 +50,6 @@ namespace TeamManagement_Models.Database
                     Password = PasswordHasher.HashPassword("team1234")
                 });
         }
+        #endregion
     }
 }

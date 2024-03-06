@@ -5,15 +5,21 @@ namespace TeamManagement.Services
 {
     public class UserService:IUserService
     {
+        #region Services
         private readonly IUserRepository _userRepository;
         private readonly IMailServices _mailServices;
+        #endregion
+
+        #region DI
         public UserService(IUserRepository userRepo, IMailServices mailServices)
         {
             _userRepository = userRepo;
             _mailServices = mailServices;   
 
         }
+        #endregion
 
+        #region Methods
         public string Register(User user)
         {
             user.Password = PasswordHasher.HashPassword("team1234");
@@ -56,6 +62,7 @@ namespace TeamManagement.Services
             _mailServices.SendEmail(obj.Email, "Password changed!", "Your Password has been changed!");
             return "Successfully Changed";
         }
+        #endregion
 
     }
 }

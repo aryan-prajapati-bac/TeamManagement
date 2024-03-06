@@ -29,7 +29,7 @@ namespace TeamDemo.Controllers
            
             if (token.Equals("Failed")) 
                 return NotFound("User not Found");
-
+            if (token.Equals("Invalid Credentials")) return Ok("Invalid Credentials");
             if(!token.Equals(""))  
                 Response.Headers.Add("Aunthentication-Token",token); 
             else  

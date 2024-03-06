@@ -1,7 +1,8 @@
 ﻿namespace TeamManagement.ViewModals
 {
-    public class PlayerDTO
+    public class PlayerView
     {
+        #region Properties
         public string PlayerName { get; set; }
         public string PlayerEmail { get; set; }
         public string CoachName { get; set; }
@@ -10,7 +11,9 @@
 
         public string CaptainName { get; set; }
         public string CaptainEmail { get; set; }
+        #endregion
 
+        #region Method
         public override string ToString()
         {
             return $"Welcome {PlayerName},You are in a team.\n" +
@@ -20,5 +23,6 @@
                 $"Captain : {CaptainName}\n" +
                 $"Captain Email : {CaptainEmail}";
         }
+        #endregion
     }
 }
