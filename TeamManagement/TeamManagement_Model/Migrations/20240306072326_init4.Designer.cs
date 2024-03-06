@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamManagement_Models.Database;
 
@@ -11,9 +12,11 @@ using TeamManagement_Models.Database;
 namespace TeamManagement_Model.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240306072326_init4")]
+    partial class init4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace TeamManagement_Model.Migrations
                         new
                         {
                             Email = "aryanprajapati2112001@gmail.com",
-                            Password = "orM+mYfowlQ2G8r87ViiRep7qRnq8JMRlpSmjgG9Wf4="
+                            Password = "qVq+2b1o3yUX82d55dzBemgrEXuiz5AE7fdpOYdwAU4="
                         });
                 });
 
@@ -92,7 +95,7 @@ namespace TeamManagement_Model.Migrations
                             DOB = new DateTime(2001, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Aryan",
                             LastName = "Prajapati",
-                            Password = "orM+mYfowlQ2G8r87ViiRep7qRnq8JMRlpSmjgG9Wf4=",
+                            Password = "qVq+2b1o3yUX82d55dzBemgrEXuiz5AE7fdpOYdwAU4=",
                             RoleId = 3,
                             UserId = 0
                         });

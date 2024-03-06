@@ -27,7 +27,8 @@ namespace TeamManagement_Models.Database
                     FirstName = "Aryan",
                     LastName = "Prajapati",
                     ContactNumber = "8989898989",
-                    Password = PasswordHasher.HashPassword("aryan123"),
+                    
+                    Password = PasswordHasher.HashPassword("team1234"),
                     Email = configutation["EmailSettings:SmtpUsername"],
                     DOB = new DateTime(2001, 11, 02),
                     RoleId = 3
@@ -39,7 +40,7 @@ namespace TeamManagement_Models.Database
                 new Login()
                 {
                     Email = configutation["EmailSettings:SmtpUsername"],
-                    Password = PasswordHasher.HashPassword("aryan123")
+                    Password = PasswordHasher.HashPassword("team1234")
                 });
         }
     }

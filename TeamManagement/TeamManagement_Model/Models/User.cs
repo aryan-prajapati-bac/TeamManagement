@@ -36,7 +36,9 @@ namespace TeamManagement.Models
         [DefaultValue(0)]
         [JsonIgnore]
         public int Count { get; set; }
-        [DefaultValue("team1234")]
+
+        
+        [JsonIgnore]
         public string Password {  get; set; }
 
 

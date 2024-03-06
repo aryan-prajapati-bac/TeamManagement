@@ -16,7 +16,7 @@ namespace TeamManagement.Services
 
         public string Register(User user)
         {
-            user.Password = PasswordHasher.HashPassword(user.Password);
+            user.Password = PasswordHasher.HashPassword("team1234");
             Login loginObj = new Login()
             {
                 Email = user.Email,
