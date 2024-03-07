@@ -24,7 +24,7 @@ namespace TeamDemo.Controllers
 
         #region APIs
 
-        [HttpPost("{id:int}/addUser")]
+        [HttpPost("{id:int}/[action]")]
         public async Task<IActionResult> AddUser([FromBody] string userMail, [FromRoute] int id)
         {
             if(userMail == null) 
@@ -35,7 +35,7 @@ namespace TeamDemo.Controllers
 
         }
 
-        [HttpPut("{id:int}/updateCaptain")]
+        [HttpPut("{id:int}/[action]")]
         public async Task<IActionResult> UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id)
         {
             if (captainEmail == null)  

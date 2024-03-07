@@ -21,7 +21,7 @@ namespace TeamManagement.Controllers
 
         #region APIs
 
-        [HttpPost("register")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
             if (user == null) 
@@ -32,7 +32,7 @@ namespace TeamManagement.Controllers
         }
 
         [Authorize]
-        [HttpPut("change/pwd")]
+        [HttpPut("[action]")]
         public async Task<IActionResult> ChangePwd([FromBody] Login login)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");

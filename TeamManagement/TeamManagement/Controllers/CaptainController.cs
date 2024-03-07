@@ -22,7 +22,7 @@ namespace TeamDemo.Controllers
         #endregion
 
         #region APIs
-        [HttpGet("selectPlayer")]
+        [HttpPut("[action]")]
         public async Task<IActionResult> AddPlayer([FromBody] string playerEmail)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
