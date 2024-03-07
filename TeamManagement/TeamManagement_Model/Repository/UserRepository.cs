@@ -18,50 +18,128 @@ namespace TeamManagement.Repository
         }
 
         public async Task<User> GetUser(string userEmail) {
-              return await _dbContext.Users.FindAsync(userEmail);
-               
+            try
+            {
+                return await _dbContext.Users.FindAsync(userEmail);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
          }
 
         public async Task<User> GetUserById(int id)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId == id);
-            
+            try
+            {
+                return await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
+
         }
 
         public async Task<User> GetUserByRoleId(int id)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.RoleId == id);
+            try
+            {
+                return await _dbContext.Users.FirstOrDefaultAsync(x => x.RoleId == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public async Task<List<User>> GetUsersListById(int id)
         {
-            return await _dbContext.Users.Where(x => x.RoleId == id).ToListAsync();
+            try
+            {
+                return await _dbContext.Users.Where(x => x.RoleId == id).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public async Task<Login> GetLoginUser(string loginEmail)
         {
-            return await _dbContext.Login.FindAsync(loginEmail);
-            
+            try
+            {
+                return await _dbContext.Login.FindAsync(loginEmail);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
         }
         public async Task AddUser(User user)
         {
-             await _dbContext.Users.AddAsync(user);
-             await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task AddLoginUser(Login login)
         {
-            await _dbContext.Login.AddAsync(login);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Login.AddAsync(login);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+            }
         }
         public async Task SaveUser(User user)
         {
-             await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task SaveLoginUser(Login user)
         {
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
