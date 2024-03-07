@@ -32,48 +32,73 @@ namespace TeamManagement.Services
         #region Methods
         public async Task<string> AddUser(string userEmail, int coachId)
         {
-            User user_ = await _userRepository.GetUser(userEmail);
-            User coach =  await _userRepository.GetUserByRoleId(coachId);
+            try
+            {
+                User user_ = await _userRepository.GetUser(userEmail);
+                User coach = await _userRepository.GetUserByRoleId(coachId);
 
-            if (user_ == null) return "First register yourself";
-            if (user_.Equals(coach)) return "You are Coach.\n You are already Selected!";
-            if (user_.RoleId == enumCaptainId) return "Provide user is Captain.He/she is already added.";
-            if (user_.RoleId == enumPlayerId) return "Already selected by Coach!";
-            if(user_.RoleId== enumTeamPlayerId) return $"{user_.FirstName} is already a Team-Player."; 
-            if (coach.Count == enumCoachMaxCount) return "You as a Coach cannot add more than 15 players.";
+                if (user_ == null) 
+                    return "First register yourself";
 
-            user_.RoleId = enumPlayerId;
-            coach.Count += 1;
+                if (user_.Equals(coach)) 
+                    return "You are Coach.\n You are already Selected!";
 
-            await _userRepository.SaveUser(user_);
-            await _userRepository.SaveUser(coach);
-            await _mailServices.SendEmail(userEmail, "Selction By Coach", $"Hello {user_.FirstName}!\nYou are added as a Player by Coach.");
-            return "Added successfully..";
+                if (user_.RoleId == enumCaptainId) 
+                    return "Provide user is Captain.He/she is already added.";
+
+                if (user_.RoleId == enumPlayerId) 
+                    return "Already selected by Coach!";
+
+                if (user_.RoleId == enumTeamPlayerId) 
+                    return $"{user_.FirstName} is already a Team-Player.";
+
+                if (coach.Count == enumCoachMaxCount) 
+                    return "You as a Coach cannot add more than 15 players.";
+
+                user_.RoleId = enumPlayerId;
+                coach.Count += 1;
+
+                await _userRepository.SaveUser(user_);
+                await _userRepository.SaveUser(coach);
+                await _mailServices.SendEmail(userEmail, "Selction By Coach", $"Hello {user_.FirstName}!\nYou are added as a Player by Coach.");
+                return "Added successfully..";
+            }
+            catch (Exception ex)
+            {
+                return "Error in Adding User by Coach";
+            }
         }
 
         public async Task<string> MakeCaptain(string captainEmail, int coachId)
         {
-            List<User> userList = await _userRepository.GetUsersListById(enumCaptainId);
-
-            if (userList.Count == 0)
+            try
             {
-                User user1 = await _userRepository.GetUser(captainEmail);
-                if (user1.RoleId == 1)
+                List<User> userList = await _userRepository.GetUsersListById(enumCaptainId);
+
+                if (userList.Count == 0)
                 {
-                    User user = await _userRepository.GetUser(captainEmail);
-                    user.RoleId = enumCaptainId;
-                    await _userRepository.SaveUser(user);
-                    await _mailServices.SendEmail(user.Email, "Captain", "You are Captain onwards");
-                    return $"{user.FirstName} is Captain onwards...";
+                    User user1 = await _userRepository.GetUser(captainEmail);
+                    if (user1.RoleId == 1)
+                    {
+                        User user = await _userRepository.GetUser(captainEmail);
+                        user.RoleId = enumCaptainId;
+                        await _userRepository.SaveUser(user);
+                        await _mailServices.SendEmail(user.Email, "Captain", "You are Captain onwards");
+                        return $"{user.FirstName} is Captain onwards...";
+                    }
+                    else
+                    {
+                        return "First, select him/her in any Team and then only you can assign captaincy to him/her";
+                    }
                 }
                 else
                 {
-                    return "First, select him/her in any Team and then only you can assign captaincy to him/her";
+                    return await UpdateCaptain(captainEmail, coachId);
                 }
             }
-            else
+            catch(Exception ex)
             {
-                return await UpdateCaptain(captainEmail, coachId);
+                return "Error in Updating Captain by Coach";
             }
         }
 
@@ -81,10 +106,19 @@ namespace TeamManagement.Services
         {
             User captain = await _userRepository.GetUserByRoleId(enumCaptainId);
             User user_ = await _userRepository.GetUser(captainEmail);
-            if (captain.Equals(user_)) return $"{captain.FirstName} is already captain";
-            if (user_.RoleId == enumUserId) return "First, select him/her in any Team and then only you can assign captaincy to him/her";
-            if (user_.RoleId == enumPlayerId) return "Not in team! First let captain select him/her.";
-            if (user_.RoleId == enumCoachId) return "Coach can not be a Captain";
+
+            if (captain.Equals(user_)) 
+                return $"{captain.FirstName} is already captain";
+
+            if (user_.RoleId == enumUserId) 
+                return "First, select him/her in any Team and then only you can assign captaincy to him/her";
+
+            if (user_.RoleId == enumPlayerId) 
+                return "Not in team! First let captain select him/her.";
+
+            if (user_.RoleId == enumCoachId) 
+                return "Coach can not be a Captain";
+
             if (user_.RoleId == enumTeamPlayerId)
             {
                 user_.Count = captain.Count;

@@ -8,6 +8,7 @@ using TeamManagement.Interfaces;
 using TeamManagement.Models;
 using TeamManagement_Services;
 using Microsoft.Extensions.Configuration;
+using System.Linq.Expressions;
 
 namespace TeamManagement.Services
 {
@@ -38,30 +39,37 @@ namespace TeamManagement.Services
         #region Methods
         public async Task<string> Authenticate(Login user)
         {
+            try { 
             User _user = await _userRepository.GetUser(user.Email);
 
-            if (_user == null) 
+            if (_user == null)
                 return "Failed";
 
-            if (!_user.Password.Equals(PasswordHasher.HashPassword(user.Password))) 
+            if (!_user.Password.Equals(PasswordHasher.HashPassword(user.Password)))
                 return "Invalid Credentials";
 
-            if (_user.RoleId == enumUserId)  
+            if (_user.RoleId == enumUserId)
                 return await TokenGeneration("registerdUser", _user.UserId);
 
-            if (_user.RoleId == enumPlayerId)  
+            if (_user.RoleId == enumPlayerId)
                 return await TokenGeneration("AddedByCoach", _user.UserId);
 
-            if (_user.RoleId == enumTeamPlayerId) 
+            if (_user.RoleId == enumTeamPlayerId)
                 return await TokenGeneration("TeamPlayer", _user.UserId);
 
-            if (_user.RoleId == enumCoachId)  
-                return await TokenGeneration("coach", _user.UserId); 
+            if (_user.RoleId == enumCoachId)
+                return await TokenGeneration("coach", _user.UserId);
 
-            if (_user.RoleId == enumCaptainId) 
+            if (_user.RoleId == enumCaptainId)
                 return await TokenGeneration("captain", _user.UserId);
 
             return "";
+        }
+            catch (Exception ex)
+            {
+                return "Error in Logging in";
+            }
+       
         }
 
         public async Task<string> TokenGeneration(string role,int id)
@@ -92,64 +100,72 @@ namespace TeamManagement.Services
 
         public async Task<string> ResponseObj(Login loginObj)
         {
-            CoachView coachView = new CoachView();
-            CaptainView captainView = new CaptainView();
-            PlayerView playerView = new PlayerView();
-            
-            User _user = await _userRepository.GetUser(loginObj.Email);
-            if (_user == null) return "First register your self!";
-
-            if (_user.RoleId == enumCoachId)
+            try
             {
-                coachView.CoachName = (await _userRepository.GetUserByRoleId(enumCoachId)).FirstName;
-                coachView.CoachEmail = (await _userRepository.GetUserByRoleId(enumCoachId)).Email;
-                if (await _userRepository.GetUserByRoleId(enumCaptainId) != null)
+                CoachView coachView = new CoachView();
+                CaptainView captainView = new CaptainView();
+                PlayerView playerView = new PlayerView();
+
+                User _user = await _userRepository.GetUser(loginObj.Email);
+                if (_user == null) return "First register your self!";
+
+                if (_user.RoleId == enumCoachId)
                 {
-                    coachView.CaptainName =(await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
-                    coachView.CaptainEmail =(await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
+                    coachView.CoachName = (await _userRepository.GetUserByRoleId(enumCoachId)).FirstName;
+                    coachView.CoachEmail = (await _userRepository.GetUserByRoleId(enumCoachId)).Email;
+                    if (await _userRepository.GetUserByRoleId(enumCaptainId) != null)
+                    {
+                        coachView.CaptainName = (await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
+                        coachView.CaptainEmail = (await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
+                    }
+                    else
+                    {
+                        coachView.CaptainName = "Not assigned";
+                        coachView.CaptainEmail = "Not assigned";
+                    }
+                    if (await _userRepository.GetUserByRoleId(enumTeamPlayerId) != null)
+                    {
+                        coachView.TeamPlayers = await _userRepository.GetUsersListById(enumTeamPlayerId);
+                    }
+
+
+
+                    return coachView.ToString();
                 }
-                else {
-                    coachView.CaptainName = "Not assigned";
-                    coachView.CaptainEmail = "Not assigned";
-                }
-                if (await _userRepository.GetUserByRoleId(enumTeamPlayerId) != null)
+                if (_user.RoleId == enumCaptainId)
                 {
-                    coachView.TeamPlayers = await _userRepository.GetUsersListById(enumTeamPlayerId);
+                    captainView.CaptainName = (await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
+                    captainView.CaptainEmail = (await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
+                    captainView.TeamPlayers = await _userRepository.GetUsersListById(enumTeamPlayerId);
+
+                    return captainView.ToString();
                 }
-                
-                
 
-                return coachView.ToString();
+                if (_user.RoleId == enumTeamPlayerId)
+                {
+                    playerView.PlayerName = _user.FirstName;
+                    playerView.PlayerEmail = _user.Email;
+                    playerView.CoachName = (await _userRepository.GetUserByRoleId(enumCoachId)).FirstName;
+                    playerView.CoachEmail = (await _userRepository.GetUserByRoleId(enumCoachId)).Email;
+                    playerView.CaptainName = (await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
+                    playerView.CaptainEmail = (await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
+
+                    return playerView.ToString();
+                }
+
+                if (_user.RoleId == enumPlayerId) return $"Welcome {_user.FirstName}, You are added by Coach\n" +
+                        $"Only after selected by Captain, you will be in his/her Team.";
+
+                return $"Welcome {_user.FirstName},You have logged in successfully\n" +
+                    $"Only after added by Coach, you will be able to join any Team.";
             }
-            if (_user.RoleId == enumCaptainId)
+            catch(Exception ex)
             {
-                captainView.CaptainName =(await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
-                captainView.CaptainEmail =  (await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
-                captainView.TeamPlayers = await _userRepository.GetUsersListById(enumTeamPlayerId);
-
-                return captainView.ToString();
+                return "Error in Dashboard";
             }
-
-            if (_user.RoleId == enumTeamPlayerId)
-            {
-                playerView.PlayerName = _user.FirstName;
-                playerView.PlayerEmail=_user.Email;
-                playerView.CoachName = (await _userRepository.GetUserByRoleId(enumCoachId)).FirstName;
-                playerView.CoachEmail = (await _userRepository.GetUserByRoleId(enumCoachId)).Email;
-                playerView.CaptainName = (await _userRepository.GetUserByRoleId(enumCaptainId)).FirstName;
-                playerView.CaptainEmail = (await _userRepository.GetUserByRoleId(enumCaptainId)).Email;
-                
-                return playerView.ToString();
             }
-
-            if (_user.RoleId == enumPlayerId) return $"Welcome {_user.FirstName}, You are added by Coach\n" +
-                    $"Only after selected by Captain, you will be in his/her Team.";
-
-            return $"Welcome {_user.FirstName},You have logged in successfully\n" +
-                $"Only after added by Coach, you will be able to join any Team.";
             
-
-        }
+       
         #endregion
     }
 }
