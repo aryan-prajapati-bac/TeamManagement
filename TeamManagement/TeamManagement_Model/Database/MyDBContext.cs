@@ -29,20 +29,22 @@ namespace TeamManagement_Models.Database
         {
 
             // Adding Coach details through Data seeding in Users Table
+
             modelBuilder.Entity<User>().HasData(
                 new User()
                 {
                     FirstName = "Aryan",
                     LastName = "Prajapati",
-                    ContactNumber = "8989898989",                    
+                    ContactNumber = "8989898989",
                     Password = PasswordHasher.HashPassword("team1234"),
                     Email = configutation["EmailSettings:SmtpUsername"],
                     DOB = new DateTime(2001, 11, 02),
                     RoleId = 3
 
-                });
+                }); ;
 
             // Adding Coach credentials through Data seeding in Login table
+
             modelBuilder.Entity<Login>().HasData(
                 new Login()
                 {

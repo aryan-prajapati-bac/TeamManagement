@@ -34,10 +34,18 @@ namespace TeamManagement.Services
             User user_ = await _userRepository.GetUser(playerEmail);
             User captain = await _userRepository.GetUserById(captainId);
 
-            if (user_ == null) { return "Provided User is not available"; }            
-            if (user_.RoleId == enumUserId) return $"First, {user_.FirstName} has to be added by Coach and then you can select {user_.FirstName} as Team-member";
-            if (captain.Count == enumCaptainMaxCount) return "You cannot select more than 10 players";
-            if (user_.RoleId == enumTeamPlayerId) return $"{user_.FirstName} is already in Team";
+            if (user_ == null) 
+                return "Provided User is not available"; 
+            
+            if (user_.RoleId == enumUserId) 
+                return $"First, {user_.FirstName} has to be added by Coach and then you can select {user_.FirstName} as Team-member";
+
+            if (captain.Count == enumCaptainMaxCount) 
+                return "You cannot select more than 10 players";
+
+            if (user_.RoleId == enumTeamPlayerId) 
+                return $"{user_.FirstName} is already in Team";
+
             if (user_.RoleId == enumPlayerId)
             {
                 user_.RoleId = enumTeamPlayerId;
@@ -47,8 +55,12 @@ namespace TeamManagement.Services
                 await _mailServices.SendEmail(user_.Email, "Selected in team!", $"Congratulations {user_.FirstName}!\nYou are selected in a Team");
                 return "Selected in a team";
             }
-            if (user_.RoleId == enumCaptainId) return "You are already in team";
-            if (user_.RoleId == enumCoachId) return "Coach cannot be added in team";
+
+            if (user_.RoleId == enumCaptainId) 
+                return "You are already in team";
+
+            if (user_.RoleId == enumCoachId) 
+                return "Coach cannot be added in team";
 
             return $"{user_.FirstName} is already in Team";
         }

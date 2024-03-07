@@ -10,13 +10,18 @@ namespace TeamManagement.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MyDBContext _dbContext;        
+        #region DBContext
+        private readonly MyDBContext _dbContext;
+        #endregion
 
+        #region DI
         public UserRepository(MyDBContext context)
         {
             _dbContext = context;
         }
+        #endregion
 
+        #region Method-Implementations
         public async Task<User> GetUser(string userEmail) {
             try
             {
@@ -141,5 +146,6 @@ namespace TeamManagement.Repository
                 Console.WriteLine(ex.Message);
             }
         }
+        #endregion
     }
 }

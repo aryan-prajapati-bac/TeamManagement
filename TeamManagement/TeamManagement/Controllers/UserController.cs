@@ -24,10 +24,8 @@ namespace TeamManagement.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
-
             if (user == null) 
                 return BadRequest("Provide data");
-
            
             return Ok(await _userService.Register(user));
             

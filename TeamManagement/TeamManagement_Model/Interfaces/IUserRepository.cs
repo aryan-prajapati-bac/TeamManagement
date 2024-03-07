@@ -5,6 +5,7 @@ namespace TeamManagement.Interfaces
 {
     public interface IUserRepository
     {
+        #region Method-Declarations
         Task<User> GetUser(string userEmail);
 
         Task<User> GetUserById(int userId);
@@ -19,11 +20,10 @@ namespace TeamManagement.Interfaces
 
         Task SaveLoginUser(Login user);
 
-
         Task AddUser(User user);
 
         Task AddLoginUser(Login login);
-
+        #endregion
 
     }
 }

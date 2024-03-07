@@ -23,8 +23,7 @@ namespace TeamManagement.Services
         public async Task<string> Register(User user)
         {
             string register = $"Welcome {user.FirstName}, You have registerd successfully!\n" +
-                $"Username:{user.Email}";
-            
+                              $"Username:{user.Email}";            
             user.Password = PasswordHasher.HashPassword("team1234");
             Login loginObj = new Login()
             {
@@ -50,13 +49,19 @@ namespace TeamManagement.Services
         public async Task<string> ChangePwd(Login obj,int id)
         {
             
-            if (obj == null) return "Provide data";
+            if (obj == null) 
+                return "Provide data";
+
             User user = await _userRepository.GetUserById(id);
-            if (!user.Email.Equals(obj.Email)) return "You have to log in first!!";
+
+            if (!user.Email.Equals(obj.Email)) 
+                return "You have to log in first!!";
+
             Login login =await _userRepository.GetLoginUser(obj.Email);
+
             string changedPwd = $"Hello {user.FirstName}!\n" +
-                $"Your Password has been successfully changed!";
-            //User user = _userRepository.GetUser(obj.Email);
+                                $"Your Password has been successfully changed!";
+
             string newPwd = PasswordHasher.HashPassword(obj.Password);
 
             login.Password=newPwd;

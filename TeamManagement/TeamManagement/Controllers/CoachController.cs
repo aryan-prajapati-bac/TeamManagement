@@ -27,14 +27,21 @@ namespace TeamDemo.Controllers
         [HttpPost("{id:int}/addUser")]
         public async Task<IActionResult> AddUser([FromBody] string userMail, [FromRoute] int id)
         {
-            if(userMail == null) return Ok("Provide player data");       
+            if(userMail == null) 
+                return Ok("Provide player data");       
+            
+            
             return Ok(await _coachService.AddUser(userMail, id));
 
         }
 
         [HttpPut("{id:int}/updateCaptain")]
-        public async Task<IActionResult> UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id) {
-            if (captainEmail == null)  return Ok("Provide player data"); 
+        public async Task<IActionResult> UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id)
+        {
+            if (captainEmail == null)  
+                return Ok("Provide player data"); 
+            
+            
             return Ok(await _coachService.MakeCaptain(captainEmail, id));
 
         }

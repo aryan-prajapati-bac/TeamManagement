@@ -39,14 +39,27 @@ namespace TeamManagement.Services
         public async Task<string> Authenticate(Login user)
         {
             User _user = await _userRepository.GetUser(user.Email);
-            if (_user == null) return "Failed";
-            if (!_user.Password.Equals(PasswordHasher.HashPassword(user.Password))) return "Invalid Credentials";
-            if (_user.RoleId == enumUserId)  return await TokenGeneration("registerdUser", _user.UserId);
-            if (_user.RoleId == enumPlayerId)  return await TokenGeneration("AddedByCoach", _user.UserId);
-            if (_user.RoleId == enumTeamPlayerId) return await TokenGeneration("TeamPlayer", _user.UserId);
-            if (_user.RoleId == enumCoachId)  return await TokenGeneration("coach", _user.UserId); 
 
-            if (_user.RoleId == enumCaptainId) return await TokenGeneration("captain", _user.UserId);
+            if (_user == null) 
+                return "Failed";
+
+            if (!_user.Password.Equals(PasswordHasher.HashPassword(user.Password))) 
+                return "Invalid Credentials";
+
+            if (_user.RoleId == enumUserId)  
+                return await TokenGeneration("registerdUser", _user.UserId);
+
+            if (_user.RoleId == enumPlayerId)  
+                return await TokenGeneration("AddedByCoach", _user.UserId);
+
+            if (_user.RoleId == enumTeamPlayerId) 
+                return await TokenGeneration("TeamPlayer", _user.UserId);
+
+            if (_user.RoleId == enumCoachId)  
+                return await TokenGeneration("coach", _user.UserId); 
+
+            if (_user.RoleId == enumCaptainId) 
+                return await TokenGeneration("captain", _user.UserId);
 
             return "";
         }
@@ -62,11 +75,13 @@ namespace TeamManagement.Services
                 new Claim("UserId",id.ToString())
             };
 
-            var Sectoken = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-              _configuration["Jwt:Issuer"],
-              claims,  
-              expires: DateTime.UtcNow.AddMinutes(30),
-              signingCredentials: credentials);
+            var Sectoken = new JwtSecurityToken(
+                                 _configuration["Jwt:Issuer"],
+                                 _configuration["Jwt:Issuer"],
+                                 claims,  
+                                 expires: DateTime.UtcNow.AddMinutes(30),
+                                 signingCredentials: credentials
+                                 );
 
             
             var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
