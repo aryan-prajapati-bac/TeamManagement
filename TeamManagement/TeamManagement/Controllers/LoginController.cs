@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TeamManagement.Controllers;
 using TeamManagement.Models;
 using TeamManagement.Services;
@@ -19,8 +20,8 @@ namespace TeamDemo.Controllers
         #endregion
 
         #region APIs
-        [HttpGet("signin")]
-        public async Task<IActionResult> Login([FromBody] Login obj)
+        [HttpGet("Auth")]
+        public async Task<IActionResult> Authenticate([FromBody] Login obj)
         {
             if (obj == null) 
                 return BadRequest("Enter details");
@@ -33,15 +34,23 @@ namespace TeamDemo.Controllers
             if (token.Equals("Invalid Credentials")) 
                 return Ok("Invalid Credentials");
 
-            if(!token.Equals(""))  
-                Response.Headers.Add("Aunthentication-Token",token); 
-            else  
-                Response.Headers.Add("No-token", ""); 
-
             
+            return Ok(token);
+
+        }
+
+        [HttpGet("signin")]
+        public async Task<IActionResult> Login([FromBody] Login obj)
+        {
+            if (obj == null)
+                return BadRequest("Enter details");           
+
+
             return Ok(await _loginService.ResponseObj(obj));
 
         }
+
+
         #endregion
 
     }
