@@ -4,8 +4,8 @@ namespace TeamManagement.Interfaces
 {
     public interface IUserService
     {
-        string Register(User user);
+        Task<string> Register(User user);
 
-        string ChangePwd(Login login,int id);
+        Task<string> ChangePwd(Login login,int id);
     }
 }

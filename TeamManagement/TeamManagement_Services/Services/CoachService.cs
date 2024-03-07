@@ -30,10 +30,10 @@ namespace TeamManagement.Services
         #endregion
 
         #region Methods
-        public string AddUser(string userEmail, int coachId)
+        public async Task<string> AddUser(string userEmail, int coachId)
         {
-            User user_ = _userRepository.GetUser(userEmail);
-            User coach = _userRepository.GetUserByRoleId(coachId);
+            User user_ = await _userRepository.GetUser(userEmail);
+            User coach =  await _userRepository.GetUserByRoleId(coachId);
 
             if (user_ == null) return "First register yourself";
             if (user_.Equals(coach)) return "You are Coach.\n You are already Selected!";
@@ -45,24 +45,25 @@ namespace TeamManagement.Services
             user_.RoleId = enumPlayerId;
             coach.Count += 1;
 
-            _userRepository.SaveUser(user_);
-            _userRepository.SaveUser(coach);
-            _mailServices.SendEmail(userEmail, "Selction By Coach", "You are now player assigned by Coach.");
+            await _userRepository.SaveUser(user_);
+            await _userRepository.SaveUser(coach);
+            await _mailServices.SendEmail(userEmail, "Selction By Coach", $"Hello {user_.FirstName}!\nYou are added as a Player by Coach.");
             return "Added successfully..";
         }
 
-        public string MakeCaptain(string captainEmail, int coachId)
+        public async Task<string> MakeCaptain(string captainEmail, int coachId)
         {
-            List<User> userList = _userRepository.GetUsersListById(enumCaptainId);
+            List<User> userList = await _userRepository.GetUsersListById(enumCaptainId);
 
             if (userList.Count == 0)
             {
-                if (_userRepository.GetUser(captainEmail).RoleId == 1)
+                User user1 = await _userRepository.GetUser(captainEmail);
+                if (user1.RoleId == 1)
                 {
-                    User user = _userRepository.GetUser(captainEmail);
+                    User user = await _userRepository.GetUser(captainEmail);
                     user.RoleId = enumCaptainId;
-                     _userRepository.SaveUser(user);
-                    _mailServices.SendEmail(user.Email, "Captain", "You are Captain onwards");
+                    await _userRepository.SaveUser(user);
+                    await _mailServices.SendEmail(user.Email, "Captain", "You are Captain onwards");
                     return $"{user.FirstName} is Captain onwards...";
                 }
                 else
@@ -72,14 +73,14 @@ namespace TeamManagement.Services
             }
             else
             {
-                return UpdateCaptain(captainEmail, coachId);
+                return await UpdateCaptain(captainEmail, coachId);
             }
         }
 
-        public string UpdateCaptain(string captainEmail, int coachId)
+        public async Task<string> UpdateCaptain(string captainEmail, int coachId)
         {
-            User captain = _userRepository.GetUserByRoleId(enumCaptainId);
-            User user_ = _userRepository.GetUser(captainEmail);
+            User captain = await _userRepository.GetUserByRoleId(enumCaptainId);
+            User user_ = await _userRepository.GetUser(captainEmail);
             if (captain.Equals(user_)) return $"{captain.FirstName} is already captain";
             if (user_.RoleId == enumUserId) return "First, select him/her in any Team and then only you can assign captaincy to him/her";
             if (user_.RoleId == enumPlayerId) return "Not in team! First let captain select him/her.";
@@ -90,10 +91,10 @@ namespace TeamManagement.Services
                 captain.Count = 0;
                 captain.RoleId = enumTeamPlayerId;
                 user_.RoleId = enumCaptainId;
-                _userRepository.SaveUser(user_);
-                _userRepository.SaveUser(captain);
-                _mailServices.SendEmail(captain.Email, "Removed Captain", "You are no longer Captain now...");
-                _mailServices.SendEmail(user_.Email, "Captain", "You are Captain onwards");
+                await _userRepository.SaveUser(user_);
+                await _userRepository.SaveUser(captain);
+                await _mailServices.SendEmail(captain.Email, "Removed Captain", $"Hello {captain.FirstName},You are no longer Captain now!");
+                await _mailServices.SendEmail(user_.Email, "Captain", $"Hello {user_.FirstName},You are Captain onwards!");
             }
             return $"{user_.FirstName} is Captain onwards...";
 

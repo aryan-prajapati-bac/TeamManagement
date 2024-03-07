@@ -5,24 +5,24 @@ namespace TeamManagement.Interfaces
 {
     public interface IUserRepository
     {
-        User GetUser(string userEmail);
+        Task<User> GetUser(string userEmail);
 
-        User GetUserById(int userId);
+        Task<User> GetUserById(int userId);
 
-        User GetUserByRoleId(int roleId);
+        Task<User> GetUserByRoleId(int roleId);
 
-        List<User> GetUsersListById(int id);
+        Task<List<User>> GetUsersListById(int id);
 
-        Login GetLoginUser(string loginEmail);
+        Task<Login> GetLoginUser(string loginEmail);
 
-        void SaveUser(User user);
+        Task SaveUser(User user);
 
-        void SaveLoginUser(Login user);
+        Task SaveLoginUser(Login user);
 
 
-        void AddUser(User user);
+        Task AddUser(User user);
 
-        void AddLoginUser(Login login);
+        Task AddLoginUser(Login login);
 
 
     }

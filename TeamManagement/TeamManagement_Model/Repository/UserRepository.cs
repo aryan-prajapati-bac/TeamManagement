@@ -17,51 +17,51 @@ namespace TeamManagement.Repository
             _dbContext = context;
         }
 
-        public User GetUser(string userEmail) {
-              return _dbContext.Users.Find(userEmail);
+        public async Task<User> GetUser(string userEmail) {
+              return await _dbContext.Users.FindAsync(userEmail);
                
          }
 
-        public User GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return _dbContext.Users.FirstOrDefault(x => x.UserId == id);
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId == id);
             
         }
 
-        public User GetUserByRoleId(int id)
+        public async Task<User> GetUserByRoleId(int id)
         {
-            return _dbContext.Users.FirstOrDefault(x => x.RoleId == id);
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.RoleId == id);
         }
 
-        public List<User> GetUsersListById(int id)
+        public async Task<List<User>> GetUsersListById(int id)
         {
-            return _dbContext.Users.Where(x => x.RoleId == id).ToList();
+            return await _dbContext.Users.Where(x => x.RoleId == id).ToListAsync();
         }
 
-        public Login GetLoginUser(string loginEmail)
+        public async Task<Login> GetLoginUser(string loginEmail)
         {
-            return _dbContext.Login.Find(loginEmail);
+            return await _dbContext.Login.FindAsync(loginEmail);
             
         }
-        public void AddUser(User user)
+        public async Task AddUser(User user)
         {
-             _dbContext.Users.Add(user);
-             _dbContext.SaveChanges();
+             await _dbContext.Users.AddAsync(user);
+             await _dbContext.SaveChangesAsync();
         }
 
-        public void AddLoginUser(Login login)
+        public async Task AddLoginUser(Login login)
         {
-            _dbContext.Login.Add(login);
-            _dbContext.SaveChanges();
+            await _dbContext.Login.AddAsync(login);
+            await _dbContext.SaveChangesAsync();
         }
-        public void SaveUser(User user)
+        public async Task SaveUser(User user)
         {
-             _dbContext.SaveChanges();
+             await _dbContext.SaveChangesAsync();
         }
 
-        public void SaveLoginUser(Login user)
+        public async Task SaveLoginUser(Login user)
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

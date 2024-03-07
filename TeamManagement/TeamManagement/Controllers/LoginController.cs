@@ -20,12 +20,12 @@ namespace TeamDemo.Controllers
 
         #region APIs
         [HttpGet("signin")]
-        public IActionResult Login([FromBody] Login obj)
+        public async Task<IActionResult> Login([FromBody] Login obj)
         {
             if (obj == null) 
                 return BadRequest("Enter details");
 
-            string token= _loginService.Authenticate(obj);
+            string token= await _loginService.Authenticate(obj);
            
             if (token.Equals("Failed")) 
                 return NotFound("User not Found");
@@ -36,7 +36,7 @@ namespace TeamDemo.Controllers
                 Response.Headers.Add("No-token", ""); 
 
             
-            return Ok(_loginService.ResponseObj(obj));
+            return Ok(await _loginService.ResponseObj(obj));
 
         }
         #endregion

@@ -25,17 +25,17 @@ namespace TeamDemo.Controllers
         #region APIs
 
         [HttpPost("{id:int}/addUser")]
-        public IActionResult AddUser([FromBody] string userMail, [FromRoute] int id)
+        public async Task<IActionResult> AddUser([FromBody] string userMail, [FromRoute] int id)
         {
             if(userMail == null) return Ok("Provide player data");       
-            return Ok(_coachService.AddUser(userMail, id));
+            return Ok(await _coachService.AddUser(userMail, id));
 
         }
 
         [HttpPut("{id:int}/updateCaptain")]
-        public IActionResult UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id) {
+        public async Task<IActionResult> UpdateCaptain([FromBody]string captainEmail, [FromRoute] int id) {
             if (captainEmail == null)  return Ok("Provide player data"); 
-            return Ok(_coachService.MakeCaptain(captainEmail, id));
+            return Ok(await _coachService.MakeCaptain(captainEmail, id));
 
         }
 

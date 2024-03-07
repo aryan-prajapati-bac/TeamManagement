@@ -23,7 +23,7 @@ namespace TeamDemo.Controllers
 
         #region APIs
         [HttpGet("selectPlayer")]
-        public IActionResult AddPlayer([FromBody] string playerEmail)
+        public async Task<IActionResult> AddPlayer([FromBody] string playerEmail)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
             int Id = 0;
@@ -32,7 +32,7 @@ namespace TeamDemo.Controllers
                 Id = userId;
             }
 
-            string added = _captainService.SelectPlayer(playerEmail, Id);
+            string added =  Convert.ToString(await _captainService.SelectPlayer(playerEmail, Id));
             return Ok(added);
 
         }

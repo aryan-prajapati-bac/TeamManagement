@@ -2,9 +2,9 @@
 {
     public interface ICoachService
     {
-        string AddUser(string userEmail, int coachId);
+        Task<string> AddUser(string userEmail, int coachId);
 
-        string MakeCaptain(string captainEmail, int coachId);
+        Task<string> MakeCaptain(string captainEmail, int coachId);
 
     }
 }

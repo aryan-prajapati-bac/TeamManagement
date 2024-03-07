@@ -29,10 +29,10 @@ namespace TeamManagement.Services
         #endregion
 
         #region Methods
-        public string SelectPlayer(string playerEmail, int captainId)
+        public async Task<string> SelectPlayer(string playerEmail, int captainId)
         {
-            User user_ = _userRepository.GetUser(playerEmail);
-            User captain = _userRepository.GetUserById(captainId);
+            User user_ = await _userRepository.GetUser(playerEmail);
+            User captain = await _userRepository.GetUserById(captainId);
 
             if (user_ == null) { return "Provided User is not available"; }            
             if (user_.RoleId == enumUserId) return $"First, {user_.FirstName} has to be added by Coach and then you can select {user_.FirstName} as Team-member";
@@ -42,9 +42,9 @@ namespace TeamManagement.Services
             {
                 user_.RoleId = enumTeamPlayerId;
                 captain.Count += 1;
-                _userRepository.SaveUser(user_);
-                 _userRepository.SaveUser(captain);
-                _mailServices.SendEmail(user_.Email, "Selected in team!", "You are in a team now.");
+                await _userRepository.SaveUser(user_);
+                await _userRepository.SaveUser(captain);
+                await _mailServices.SendEmail(user_.Email, "Selected in team!", $"Congratulations {user_.FirstName}!\nYou are selected in a Team");
                 return "Selected in a team";
             }
             if (user_.RoleId == enumCaptainId) return "You are already in team";

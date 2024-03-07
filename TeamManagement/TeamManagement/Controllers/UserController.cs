@@ -22,20 +22,20 @@ namespace TeamManagement.Controllers
         #region APIs
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User user)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
 
             if (user == null) 
                 return BadRequest("Provide data");
 
            
-            return Ok(_userService.Register(user));
+            return Ok(await _userService.Register(user));
             
         }
 
         [Authorize]
         [HttpPut("change/pwd")]
-        public IActionResult ChangePwd([FromBody] Login login)
+        public async Task<IActionResult> ChangePwd([FromBody] Login login)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
             int Id = 0;
@@ -43,7 +43,7 @@ namespace TeamManagement.Controllers
             {
                 Id = userId;
             }
-            return Ok(_userService.ChangePwd(login,Id));
+            return Ok(await _userService.ChangePwd(login,Id));
         }
 
         #endregion

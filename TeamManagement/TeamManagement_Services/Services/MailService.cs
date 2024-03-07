@@ -19,7 +19,7 @@ namespace TeamDemo.Services
         #endregion
 
         #region Methods
-        public void SendEmail(string to, string subject, string body)
+        public async Task SendEmail(string to, string subject, string body)
         {
             string smtpServer = _configuration["EmailSettings:SmtpServer"];
             int smtoPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
@@ -40,7 +40,7 @@ namespace TeamDemo.Services
                         client.Credentials = new NetworkCredential(smtpUsername, smtpPwd);
                         client.EnableSsl = true;
 
-                        client.Send(message);
+                        await client.SendMailAsync(message);
                     }
                 }
                 catch(Exception ex) {
