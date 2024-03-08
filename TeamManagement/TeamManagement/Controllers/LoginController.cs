@@ -20,8 +20,8 @@ namespace TeamDemo.Controllers
         #endregion
 
         #region APIs
-        [HttpGet("Auth")]
-        public async Task<IActionResult> Authenticate([FromBody] Login obj)
+        [HttpGet("signin")]
+        public async Task<IActionResult> Login([FromBody] Login obj)
         {
             if (obj == null) 
                 return BadRequest("Enter details");
@@ -38,15 +38,20 @@ namespace TeamDemo.Controllers
             return Ok(token);
 
         }
-
-        [HttpGet("signin")]
-        public async Task<IActionResult> Login([FromBody] Login obj)
+        [Authorize]
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDetails()
         {
-            if (obj == null)
-                return BadRequest("Enter details");           
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            int Id = 0;
+            if (int.TryParse(userIdClaim.Value, out int userId))
+            {
+                Id = userId;
+            }
+                   
 
 
-            return Ok(await _loginService.ResponseObj(obj));
+            return Ok(await _loginService.ResponseObj(Id));
 
         }
 

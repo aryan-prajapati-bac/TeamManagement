@@ -96,7 +96,7 @@ namespace TeamManagement.Services
             return token;
         }
 
-        public async Task<string> ResponseObj(Login loginObj)
+        public async Task<string> ResponseObj(int userId)
         {
             try
             {
@@ -104,11 +104,8 @@ namespace TeamManagement.Services
                 CaptainView captainView = new CaptainView();
                 PlayerView playerView = new PlayerView();
 
-                User _user = await _userRepository.GetUser(loginObj.Email);
-                if (!_user.Password.Equals(PasswordHasher.HashPassword(loginObj.Password)))
-                    return "Invalid Credentials!";
-                else
-                {
+                User _user = await _userRepository.GetUserById(userId);
+                
                     if (_user == null) return "First register your self!";
 
                     if (_user.RoleId == enumCoachId)
@@ -160,7 +157,7 @@ namespace TeamManagement.Services
 
                     return $"Welcome {_user.FirstName},You have logged in successfully\n" +
                         $"Only after added by Coach, you will be able to join any Team.";
-                }
+                
             }
             catch (Exception ex)
             {
