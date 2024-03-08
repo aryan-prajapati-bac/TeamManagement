@@ -1,9 +1,7 @@
-﻿using TeamManagement.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using TeamManagement.Interfaces;
 using TeamManagement.Models;
 using TeamManagement_Models.Database;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 
 namespace TeamManagement.Repository

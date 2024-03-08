@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using TeamManagement.Models;
+﻿using TeamManagement.Models;
 
 namespace TeamManagement.Interfaces
 {

@@ -1,14 +1,12 @@
-﻿using Azure;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TeamManagement.ViewModals;
 using TeamManagement.Interfaces;
 using TeamManagement.Models;
+using TeamManagement.ViewModals;
 using TeamManagement_Services;
-using Microsoft.Extensions.Configuration;
-using System.Linq.Expressions;
 
 namespace TeamManagement.Services
 {
